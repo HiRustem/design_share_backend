@@ -17,6 +17,7 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: { email: dto.email, password: hashed, name: dto.name },
     });
+
     return { token: this.jwt.sign({ userId: user.id }) };
   }
 
@@ -25,6 +26,7 @@ export class AuthService {
     if (!user || !(await bcrypt.compare(dto.password, user.password))) {
       throw new BadRequestException('Invalid credentials');
     }
+
     return { token: this.jwt.sign({ userId: user.id }) };
   }
 }
