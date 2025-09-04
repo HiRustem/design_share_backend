@@ -7,7 +7,15 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async getProfile(userId: number) {
-    return this.prisma.user.findUnique({ where: { id: userId }, include: { designs: true } });
+    return this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { designs: true },
+      omit: {
+        password: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async updateProfile(userId: number, dto: UpdateUserDto) {
